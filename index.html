@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DreamyDay Wedding Planner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        pink: {
+                            50: '#fdf2f8',
+                            100: '#fce7f3',
+                            200: '#fbcfe8',
+                            300: '#f9a8d4',
+                            400: '#f472b6',
+                            500: '#ec4899',
+                            600: '#db2777',
+                            700: '#be185d',
+                            800: '#9d174d',
+                            900: '#831843',
+                        },
+                        rose: {
+                            50: '#fff1f2',
+                            100: '#ffe4e6',
+                            200: '#fecdd3',
+                            300: '#fda4af',
+                            400: '#fb7185',
+                            500: '#f43f5e',
+                            600: '#e11d48',
+                            700: '#be123c',
+                            800: '#9f1239',
+                            900: '#881337',
+                        },
+                        purple: {
+                            50: '#faf5ff',
+                            100: '#f3e8ff',
+                            200: '#e9d5ff',
+                            300: '#d8b4fe',
+                            400: '#c084fc',
+                            500: '#a855f7',
+                            600: '#9333ea',
+                            700: '#7c3aed',
+                            800: '#6b21a8',
+                            900: '#581c87',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'bounce-slow': 'bounce 2s infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .bg-pattern {
+            background-image:
+                    radial-gradient(circle at 25% 25%, rgba(236, 72, 153, 0.1) 0%, transparent 50%),
+                    radial-gradient(circle at 75% 75%, rgba(168, 85, 247, 0.1) 0%, transparent 50%);
+        }
+
+        .glass-effect {
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #ec4899, #f43f5e, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-overlay {
+            background: linear-gradient(135deg, rgba(0,0,0,0.6) 0%, rgba(236,72,153,0.3) 50%, rgba(0,0,0,0.6) 100%);
+        }
+
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-12px) scale(1.02);
+        }
+
+        .floating-hearts {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .heart {
+            position: absolute;
+            color: rgba(236, 72, 153, 0.3);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .heart:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; }
+        .heart:nth-child(2) { top: 60%; left: 80%; animation-delay: 2s; }
+        .heart:nth-child(3) { top: 80%; left: 20%; animation-delay: 4s; }
+        .heart:nth-child(4) { top: 30%; left: 70%; animation-delay: 1s; }
+        .heart:nth-child(5) { top: 70%; left: 50%; animation-delay: 3s; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50 bg-pattern">
+<!-- Navigation Bar -->
+<nav class="bg-gradient-to-r from-pink-600 via-rose-600 to-purple-600 text-white shadow-2xl relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-r from-pink-500/20 to-purple-500/20"></div>
+    <div class="container mx-auto px-6 py-4 relative z-10">
+        <div class="flex justify-between items-center">
+            <a th:href="@{/}" class="text-3xl font-bold text-gradient-white hover:scale-105 transition-transform duration-300">
+                    <span class="bg-gradient-to-r from-white to-pink-100 bg-clip-text text-transparent">
+                        DreamyDay Wedding Planner
+                    </span>
+            </a>
+            <div class="flex space-x-8">
+                <a th:href="@{/}" class="hover:text-pink-200 transition-all duration-300 font-medium text-lg relative group">
+                    Home
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-pink-200 transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a th:href="@{/user/login}" class="hover:text-pink-200 transition-all duration-300 font-medium text-lg relative group">
+                    Login
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-pink-200 transition-all duration-300 group-hover:w-full"></span>
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<div class="relative min-h-screen overflow-hidden">
+    <!-- Background Image -->
+    <div class="absolute inset-0 bg-cover bg-center bg-no-repeat transform scale-105"
+         style="background-image: url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1920&q=80');">
+    </div>
+
+    <!-- Overlay -->
+    <div class="absolute inset-0 hero-overlay"></div>
+
+    <!-- Floating Hearts -->
+    <div class="floating-hearts">
+        <div class="heart text-4xl">♥</div>
+        <div class="heart text-2xl">♥</div>
+        <div class="heart text-3xl">♥</div>
+        <div class="heart text-2xl">♥</div>
+        <div class="heart text-5xl">♥</div>
+    </div>
+
+    <!-- Content -->
+    <div class="relative container mx-auto h-screen flex flex-col justify-center items-center text-center text-white px-6 z-10">
+        <div class="max-w-5xl">
+            <h1 class="text-6xl md:text-8xl font-black mb-8 leading-tight">
+                    <span class="bg-gradient-to-r from-white via-pink-100 to-purple-100 bg-clip-text text-transparent">
+                        Welcome to Your
+                    </span>
+                <br>
+                <span class="text-gradient text-pink-300">
+                        Dream Wedding Planner
+                    </span>
+            </h1>
+
+            <p class="text-2xl md:text-4xl mb-8 text-pink-100 font-light leading-relaxed">
+                Plan your perfect wedding with DreamyDay. Start today!
+            </p>
+
+            <p class="text-xl md:text-2xl mb-12 text-gray-200 max-w-3xl mx-auto leading-relaxed">
+                Explore vendors to make your day unforgettable with our comprehensive planning tools and expert guidance.
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
+                <a th:href="@{/user/register}"
+                   class="group bg-gradient-to-r from-pink-500 to-rose-500 text-white px-12 py-5 rounded-full hover:from-pink-600 hover:to-rose-600 transition-all duration-500 transform hover:scale-110 shadow-2xl font-bold text-xl relative overflow-hidden">
+                    <span class="relative z-10">Get Started</span>
+                    <div class="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                </a>
+
+                <a href="#services"
+                   class="group bg-white/20 glass-effect text-white px-12 py-5 rounded-full hover:bg-white/30 transition-all duration-500 border-2 border-white/30 hover:border-white/50 font-bold text-xl transform hover:scale-105">
+                    <span class="relative z-10">Explore Services</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white animate-bounce-slow">
+        <div class="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
+            <div class="w-1 h-3 bg-white/70 rounded-full mt-2 animate-pulse"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Services Section -->
+<div id="services" class="relative py-24 overflow-hidden">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 bg-cover bg-center bg-fixed opacity-5"
+         style="background-image: url('https://images.unsplash.com/photo-1465495976277-4387d4b0e4a6?auto=format&fit=crop&w=1920&q=80');">
+    </div>
+
+    <div class="relative container mx-auto px-6 text-center z-10">
+        <!-- Section Header -->
+        <div class="max-w-4xl mx-auto mb-20">
+            <h2 class="text-6xl md:text-7xl font-black mb-8">
+                <span class="text-gradient">Plan Your Perfect Wedding</span>
+            </h2>
+            <p class="text-2xl text-gray-700 leading-relaxed font-light">
+                Our platform helps you manage vendors, track your budget, and create unforgettable memories with ease and elegance.
+            </p>
+        </div>
+
+        <!-- Service Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-7xl mx-auto">
+            <!-- Find Vendors Card -->
+            <div class="card-hover group bg-white/90 glass-effect p-10 rounded-3xl shadow-2xl border border-pink-100/50 relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-br from-pink-500/5 to-rose-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+                <div class="relative z-10">
+                    <div class="bg-gradient-to-br from-pink-500 to-rose-500 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-8 group-hover:scale-110 transition-transform duration-500 shadow-xl">
+                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-3xl font-bold text-pink-600 mb-6">Find Vendors</h3>
+                    <p class="text-gray-600 leading-relaxed text-lg">
+                        Browse photographers, caterers, decorators, and more from our curated network of professionals.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Manage Events Card -->
+            <div class="card-hover group bg-white/90 glass-effect p-10 rounded-3xl shadow-2xl border border-rose-100/50 relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-br from-rose-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+                <div class="relative z-10">
+                    <div class="bg-gradient-to-br from-rose-500 to-purple-500 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-8 group-hover:scale-110 transition-transform duration-500 shadow-xl">
+                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-3xl font-bold text-rose-600 mb-6">Manage Events</h3>
+                    <p class="text-gray-600 leading-relaxed text-lg">
+                        Organize your wedding date, guest list, and budget with our intuitive planning tools.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Share Feedback Card -->
+            <div class="card-hover group bg-white/90 glass-effect p-10 rounded-3xl shadow-2xl border border-purple-100/50 relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+                <div class="relative z-10">
+                    <div class="bg-gradient-to-br from-purple-500 to-pink-500 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-8 group-hover:scale-110 transition-transform duration-500 shadow-xl">
+                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-3xl font-bold text-purple-600 mb-6">Share Feedback</h3>
+                    <p class="text-gray-600 leading-relaxed text-lg">
+                        Review vendors to help others plan their perfect day and build our community.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="relative py-24 bg-gradient-to-r from-pink-600 via-rose-600 to-purple-600 overflow-hidden">
+    <!-- Background Image -->
+    <div class="absolute inset-0 bg-cover bg-center bg-fixed opacity-20"
+         style="background-image: url('https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1920&q=80');">
+    </div>
+
+    <!-- Animated Background Elements -->
+    <div class="absolute inset-0">
+        <div class="absolute top-10 left-10 w-32 h-32 bg-white/10 rounded-full animate-pulse-slow"></div>
+        <div class="absolute bottom-10 right-10 w-24 h-24 bg-white/10 rounded-full animate-pulse-slow" style="animation-delay: 1s;"></div>
+        <div class="absolute top-1/2 left-1/4 w-16 h-16 bg-white/10 rounded-full animate-pulse-slow" style="animation-delay: 2s;"></div>
+    </div>
+
+    <div class="relative container mx-auto px-6 text-center text-white z-10">
+        <h2 class="text-5xl md:text-6xl font-black mb-16">Why Choose DreamyDay?</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+            <div class="text-center group">
+                <div class="bg-white/20 glass-effect w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-500 shadow-xl">
+                    <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold mb-3">Expert Network</h3>
+                <p class="text-pink-100 text-lg">Vetted professionals</p>
+            </div>
+
+            <div class="text-center group">
+                <div class="bg-white/20 glass-effect w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-500 shadow-xl">
+                    <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold mb-3">Full Service</h3>
+                <p class="text-pink-100 text-lg">End-to-end planning</p>
+            </div>
+
+            <div class="text-center group">
+                <div class="bg-white/20 glass-effect w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-500 shadow-xl">
+                    <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold mb-3">Custom Design</h3>
+                <p class="text-pink-100 text-lg">Personalized themes</p>
+            </div>
+
+            <div class="text-center group">
+                <div class="bg-white/20 glass-effect w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-500 shadow-xl">
+                    <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold mb-3">Dream Support</h3>
+                <p class="text-pink-100 text-lg">24/7 assistance</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CTA Section -->
+<div class="relative py-24 overflow-hidden">
+    <!-- Background Image -->
+    <div class="absolute inset-0 bg-cover bg-center bg-fixed"
+         style="background-image: url('https://images.unsplash.com/photo-1606216794074-735e91aa2c92?auto=format&fit=crop&w=1920&q=80');">
+    </div>
+    <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/80"></div>
+
+    <div class="relative container mx-auto px-6 text-center text-white z-10">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-6xl md:text-7xl font-black mb-8 leading-tight">
+                    <span class="bg-gradient-to-r from-pink-300 to-purple-300 bg-clip-text text-transparent">
+                        Ready to Start Planning?
+                    </span>
+            </h2>
+            <p class="text-2xl mb-12 text-gray-200 leading-relaxed">
+                Join thousands of couples who have created their dream wedding with DreamyDay
+            </p>
+            <a th:href="@{/user/register}"
+               class="group inline-block bg-gradient-to-r from-pink-500 to-rose-500 text-white px-16 py-6 rounded-full hover:from-pink-600 hover:to-rose-600 transition-all duration-500 transform hover:scale-110 shadow-2xl font-bold text-2xl relative overflow-hidden">
+                <span class="relative z-10">Start Your Journey</span>
+                <div class="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white py-16 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+
+    <div class="relative container mx-auto px-6 text-center z-10">
+        <div class="mb-12">
+            <h3 class="text-4xl font-black mb-6">
+                    <span class="bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
+                        DreamyDay Wedding Planner
+                    </span>
+            </h3>
+            <p class="text-gray-400 max-w-2xl mx-auto text-xl leading-relaxed">
+                Making your special day extraordinary with personalized planning and expert guidance.
+            </p>
+        </div>
+
+        <div class="border-t border-gray-700 pt-8">
+            <p class="text-gray-400 text-lg">© 2025 DreamyDay Wedding Planner. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<!-- Smooth Scrolling Script -->
+<script>
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+
+    // Add scroll effect to navigation
+    window.addEventListener('scroll', function() {
+        const nav = document.querySelector('nav');
+        if (window.scrollY > 100) {
+            nav.classList.add('backdrop-blur-lg', 'bg-opacity-95');
+        } else {
+            nav.classList.remove('backdrop-blur-lg', 'bg-opacity-95');
+        }
+    });
+</script>
+</body>
+</html>

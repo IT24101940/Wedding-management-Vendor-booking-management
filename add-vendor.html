@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Vendor - DreamyDay Wedding Planner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        pink: {
+                            50: '#fdf2f8',
+                            100: '#fce7f3',
+                            200: '#fbcfe8',
+                            300: '#f9a8d4',
+                            400: '#f472b6',
+                            500: '#ec4899',
+                            600: '#db2777',
+                            700: '#be185d',
+                            800: '#9d174d',
+                            900: '#831843',
+                        },
+                        rose: {
+                            50: '#fff1f2',
+                            100: '#ffe4e6',
+                            200: '#fecdd3',
+                            300: '#fda4af',
+                            400: '#fb7185',
+                            500: '#f43f5e',
+                            600: '#e11d48',
+                            700: '#be123c',
+                            800: '#9f1239',
+                            900: '#881337',
+                        },
+                        purple: {
+                            50: '#faf5ff',
+                            100: '#f3e8ff',
+                            200: '#e9d5ff',
+                            300: '#d8b4fe',
+                            400: '#c084fc',
+                            500: '#a855f7',
+                            600: '#9333ea',
+                            700: '#7c3aed',
+                            800: '#6b21a8',
+                            900: '#581c87',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .glass-effect {
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #ec4899, #f43f5e, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .floating-icon {
+            position: absolute;
+            color: rgba(236, 72, 153, 0.15);
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .floating-icon:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+        .floating-icon:nth-child(2) { top: 20%; right: 15%; animation-delay: 2s; }
+        .floating-icon:nth-child(3) { bottom: 30%; left: 20%; animation-delay: 4s; }
+        .floating-icon:nth-child(4) { bottom: 20%; right: 25%; animation-delay: 6s; }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50 relative overflow-hidden">
+<!-- Background Image -->
+<div class="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-10"
+     style="background-image: url('https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1920&q=80');">
+</div>
+
+<!-- Floating Elements -->
+<div class="floating-elements">
+    <div class="floating-icon text-4xl">🎭</div>
+    <div class="floating-icon text-3xl">🎪</div>
+    <div class="floating-icon text-2xl">🎨</div>
+    <div class="floating-icon text-5xl">🎵</div>
+</div>
+
+<!-- Navigation Bar -->
+<nav class="bg-gradient-to-r from-pink-600 via-rose-600 to-purple-600 text-white shadow-2xl relative z-20">
+    <div class="absolute inset-0 bg-gradient-to-r from-pink-500/20 to-purple-500/20"></div>
+    <div class="container mx-auto px-6 py-4 relative z-10">
+        <div class="flex justify-between items-center">
+            <a th:href="@{/}" class="text-3xl font-bold hover:scale-105 transition-transform duration-300">
+                    <span class="bg-gradient-to-r from-white to-pink-100 bg-clip-text text-transparent">
+                        DreamyDay Wedding Planner
+                    </span>
+            </a>
+            <div class="flex space-x-8">
+                <a th:href="@{/}" class="hover:text-pink-200 transition-all duration-300 font-medium text-lg relative group">
+                    Home
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-pink-200 transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a th:href="@{/vendor/list}" class="hover:text-pink-200 transition-all duration-300 font-medium text-lg relative group">
+                    Vendors
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-pink-200 transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a th:href="@{/vendor/search}" class="hover:text-pink-200 transition-all duration-300 font-medium text-lg relative group">
+                    Search Vendors
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-pink-200 transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a th:href="@{/logout}" class="hover:text-pink-200 transition-all duration-300 font-medium text-lg relative group">
+                    Logout
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-pink-200 transition-all duration-300 group-hover:w-full"></span>
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Add Vendor Form -->
+<div class="relative z-10 flex items-center justify-center min-h-screen py-12 px-4">
+    <div class="w-full max-w-2xl">
+        <!-- Form Card -->
+        <div class="bg-white/90 glass-effect rounded-3xl shadow-2xl p-8 border border-pink-100/50 relative overflow-hidden">
+            <!-- Card Background Pattern -->
+            <div class="absolute inset-0 bg-gradient-to-br from-pink-500/5 to-purple-500/5"></div>
+
+            <div class="relative z-10">
+                <!-- Header -->
+                <div class="text-center mb-8">
+                    <div class="bg-gradient-to-br from-pink-500 to-rose-500 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl">
+                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                        </svg>
+                    </div>
+                    <h2 class="text-4xl font-black text-gradient mb-2">Add New Vendor</h2>
+                    <p class="text-gray-600 text-lg">Expand your wedding vendor network</p>
+                </div>
+
+                <!-- Add Vendor Form -->
+                <form th:action="@{/vendor/add}" th:object="${vendor}" method="post" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Vendor Name -->
+                        <div class="md:col-span-2">
+                            <label for="name" class="block text-sm font-bold text-gray-700 mb-2">Vendor Name</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                    </svg>
+                                </div>
+                                <input type="text" th:field="*{name}" id="name"
+                                       class="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-pink-500 focus:ring-4 focus:ring-pink-500/20 transition-all duration-300 text-lg bg-white/80"
+                                       placeholder="Enter vendor business name" required>
+                            </div>
+                            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-red-600 text-sm mt-1 block"></span>
+                        </div>
+
+                        <!-- Category -->
+                        <div>
+                            <label for="category" class="block text-sm font-bold text-gray-700 mb-2">Category</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                                    </svg>
+                                </div>
+                                <input type="text" th:field="*{category}" id="category"
+                                       class="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-pink-500 focus:ring-4 focus:ring-pink-500/20 transition-all duration-300 text-lg bg-white/80"
+                                       placeholder="e.g., Photography, Catering" required>
+                            </div>
+                            <span th:if="${#fields.hasErrors('category')}" th:errors="*{category}" class="text-red-600 text-sm mt-1 block"></span>
+                        </div>
+
+                        <!-- Location -->
+                        <div>
+                            <label for="location" class="block text-sm font-bold text-gray-700 mb-2">Location</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    </svg>
+                                </div>
+                                <input type="text" th:field="*{location}" id="location"
+                                       class="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-pink-500 focus:ring-4 focus:ring-pink-500/20 transition-all duration-300 text-lg bg-white/80"
+                                       placeholder="City, State" required>
+                            </div>
+                            <span th:if="${#fields.hasErrors('location')}" th:errors="*{location}" class="text-red-600 text-sm mt-1 block"></span>
+                        </div>
+
+                        <!-- Contact Email -->
+                        <div>
+                            <label for="contactEmail" class="block text-sm font-bold text-gray-700 mb-2">Contact Email</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"></path>
+                                    </svg>
+                                </div>
+                                <input type="email" th:field="*{contactEmail}" id="contactEmail"
+                                       class="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-pink-500 focus:ring-4 focus:ring-pink-500/20 transition-all duration-300 text-lg bg-white/80"
+                                       placeholder="vendor@example.com" required>
+                            </div>
+                            <span th:if="${#fields.hasErrors('contactEmail')}" th:errors="*{contactEmail}" class="text-red-600 text-sm mt-1 block"></span>
+                        </div>
+
+                        <!-- Price -->
+                        <div>
+                            <label for="price" class="block text-sm font-bold text-gray-700 mb-2">Price</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                                    </svg>
+                                </div>
+                                <input type="number" step="0.01" th:field="*{price}" id="price"
+                                       class="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-pink-500 focus:ring-4 focus:ring-pink-500/20 transition-all duration-300 text-lg bg-white/80"
+                                       placeholder="0.00" required>
+                            </div>
+                            <span th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="text-red-600 text-sm mt-1 block"></span>
+                        </div>
+                    </div>
+
+                    <button type="submit"
+                            class="w-full bg-gradient-to-r from-pink-500 to-rose-500 text-white py-4 rounded-xl hover:from-pink-600 hover:to-rose-600 transition-all duration-300 transform hover:scale-105 shadow-xl font-bold text-lg relative overflow-hidden group">
+                        <span class="relative z-10">Add Vendor to Network</span>
+                        <div class="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </button>
+                </form>
+
+                <!-- Success Message -->
+                <div th:if="${message}" class="mt-6 p-4 bg-green-50 border-l-4 border-green-500 rounded-lg">
+                    <div class="flex items-center">
+                        <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <p class="text-green-700 font-medium" th:text="${message}"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white py-8 relative z-10">
+    <div class="container mx-auto px-6 text-center">
+        <p class="text-gray-400 text-lg">© 2025 DreamyDay Wedding Planner. All rights reserved.</p>
+    </div>
+</footer>
+</body>
+</html>
